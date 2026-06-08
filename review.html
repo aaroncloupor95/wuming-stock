@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>预测复盘 · 无名</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h1>无名</h1>
+        <p class="tagline">A股科技股 · 数据驱动</p>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">概览</div>
+        <a href="index.html" class="nav-item">
+          <span class="nav-icon">📊</span> 仪表盘
+        </a>
+        <a href="review.html" class="nav-item active">
+          <span class="nav-icon">📈</span> 预测复盘
+        </a>
+        <div class="nav-section-title">自选池</div>
+        <div class="nav-stock-list" id="sidebarStockList">
+          <!-- JS 填充 -->
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h2>📈 预测复盘</h2>
+          <span class="text-muted" style="font-size:0.8rem;">历史预测 vs 实际走势 · 持续修正中</span>
+        </div>
+        <div class="header-actions">
+          <button class="btn" onclick="refreshData()">🔄 刷新</button>
+        </div>
+      </div>
+
+      <!-- 整体准确率 -->
+      <div class="stats-bar" id="reviewStats">
+        <!-- JS 填充 -->
+      </div>
+
+      <!-- 逐只准确率 -->
+      <div class="panel">
+        <div class="panel-header" onclick="togglePanel('stockAccuracyBody')">
+          <h3>📊 逐只准确率</h3>
+          <span style="font-size:0.75rem;color:var(--text-muted)" id="totalPreds"></span>
+        </div>
+        <div class="panel-body" id="stockAccuracyBody">
+          <div class="accuracy-grid" id="accuracyGrid">
+            <!-- JS 填充 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 预测历史表 -->
+      <div class="panel" style="margin-top:20px;">
+        <div class="panel-header" onclick="togglePanel('historyBody')">
+          <h3>📋 全部预测记录</h3>
+          <span style="font-size:0.75rem;color:var(--text-muted)">最近30个交易日</span>
+        </div>
+        <div class="panel-body" id="historyBody">
+          <div class="filter-bar">
+            <input type="text" class="search-input" placeholder="🔍 搜索…" id="predSearch" oninput="filterPredictions()">
+            <select id="predStockFilter" onchange="filterPredictions()">
+              <option value="all">全部股票</option>
+            </select>
+            <select id="predResultFilter" onchange="filterPredictions()">
+              <option value="all">全部结果</option>
+              <option value="right">✓ 正确</option>
+              <option value="partial">△ 部分正确</option>
+              <option value="wrong">✗ 错误</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>日期</th>
+                  <th>股票</th>
+                  <th>预测方向</th>
+                  <th>预测区间</th>
+                  <th>实际收盘</th>
+                  <th>涨跌幅</th>
+                  <th>结果</th>
+                  <th>偏差分析</th>
+                </tr>
+              </thead>
+              <tbody id="predictionHistoryBody">
+                <!-- JS 填充 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <p>⚠️ 本网站所有内容仅为数据分析，不构成任何投资建议。股市有风险，投资需谨慎。</p>
+        <p style="margin-top:4px;">Made by 无名 · <span id="footerUpdate"></span></p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="data/stocks.js"></script>
+  <script src="data/kline_data.js"></script>
+  <script src="app.js"></script>
+  <script src="review.js"></script>
+</body>
+</html>

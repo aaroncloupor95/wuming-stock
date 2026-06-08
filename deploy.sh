@@ -6,7 +6,7 @@ set -euo pipefail
 
 SITE_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORK_TREE="/tmp/wuming-site-deploy"
-REPO_URL=""  # 创建仓库后自动填入
+REPO_URL="https://github.com/aaroncloupor95/wuming-stock.git"
 
 echo "🚀 部署无名网站到 GitHub Pages..."
 

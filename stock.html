@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">个股详情 · 无名</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h1>无名</h1>
+        <p class="tagline">A股科技股 · 数据驱动</p>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">概览</div>
+        <a href="index.html" class="nav-item">
+          <span class="nav-icon">📊</span> 仪表盘
+        </a>
+        <a href="review.html" class="nav-item">
+          <span class="nav-icon">📈</span> 预测复盘
+        </a>
+        <div class="nav-section-title">自选池</div>
+        <div class="nav-stock-list" id="sidebarStockList">
+          <!-- JS 填充 -->
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <!-- 股票头部 -->
+      <div class="stock-detail-header">
+        <div>
+          <div class="stock-name-lg" id="stockName">--</div>
+          <div class="stock-code-lg" id="stockCode">--</div>
+        </div>
+        <div class="price-display">
+          <span class="current-price" id="currentPrice">--</span>
+          <span class="price-change" id="priceChange">--</span>
+        </div>
+      </div>
+
+      <!-- K线图 -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">📈 K线图</span>
+          <div class="btn-group" id="periodBtns">
+            <button class="btn small active" data-period="1m" onclick="switchPeriod('1m')">1月</button>
+            <button class="btn small" data-period="3m" onclick="switchPeriod('3m')">3月</button>
+            <button class="btn small" data-period="6m" onclick="switchPeriod('6m')">6月</button>
+            <button class="btn small" data-period="1y" onclick="switchPeriod('1y')">1年</button>
+            <button class="btn small" data-period="all" onclick="switchPeriod('all')">全部</button>
+          </div>
+        </div>
+        <div class="chart-wrapper" id="klineChart"></div>
+      </div>
+
+      <!-- 成交量 -->
+      <div class="chart-container" style="margin-top:-12px;">
+        <div class="chart-header">
+          <span class="chart-title">📊 成交量</span>
+        </div>
+        <div class="volume-chart" id="volumeChart"></div>
+      </div>
+
+      <!-- 技术指标 -->
+      <div class="panel">
+        <div class="panel-header" onclick="togglePanel('indicatorBody')">
+          <h3>📐 技术指标</h3>
+          <span style="font-size:0.75rem;color:var(--text-muted)">MA / MACD / KDJ / RSI / BOLL</span>
+        </div>
+        <div class="panel-body" id="indicatorBody">
+          <div class="indicator-row" id="indicatorRow">
+            <!-- JS 填充 -->
+          </div>
+          <div class="chart-wrapper" id="indicatorChart" style="height:200px;margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <!-- 预测 vs 实际 -->
+      <div class="panel" style="margin-top:20px;">
+        <div class="panel-header" onclick="togglePanel('predictionBody')">
+          <h3>🎯 预测 vs 实际走势</h3>
+          <span style="font-size:0.75rem;color:var(--text-muted)" id="predAccuracy"></span>
+        </div>
+        <div class="panel-body" id="predictionBody">
+          <div class="chart-wrapper" id="predictionChart" style="height:280px;"></div>
+          <table class="data-table" style="margin-top:12px;">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>预测方向</th>
+                <th>预测价格区间</th>
+                <th>实际收盘</th>
+                <th>实际涨跌</th>
+                <th>结果</th>
+              </tr>
+            </thead>
+            <tbody id="predictionTableBody">
+              <!-- JS 填充 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <p>⚠️ 本网站所有内容仅为数据分析，不构成任何投资建议。股市有风险，投资需谨慎。</p>
+        <p style="margin-top:4px;">Made by 无名 · <span id="footerUpdate"></span></p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="data/stocks.js"></script>
+  <script src="data/kline_data.js"></script>
+  <script src="app.js"></script>
+  <script src="stock.js"></script>
+</body>
+</html>

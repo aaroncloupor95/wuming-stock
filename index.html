@@ -7,53 +7,106 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>无名</h1>
-    <p class="subtitle">A股科技股分析 · 数据驱动 · 每日复盘</p>
-  </header>
+  <div class="app-layout">
+    <!-- ====== SIDEBAR ====== -->
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h1>无名</h1>
+        <p class="tagline">A股科技股 · 数据驱动</p>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">概览</div>
+        <a href="index.html" class="nav-item active">
+          <span class="nav-icon">📊</span> 仪表盘
+        </a>
+        <a href="review.html" class="nav-item">
+          <span class="nav-icon">📈</span> 预测复盘
+        </a>
+        <div class="nav-section-title">自选池</div>
+        <div class="nav-stock-list" id="sidebarStockList">
+          <!-- JS 填充 -->
+        </div>
+      </nav>
+    </aside>
 
-  <div class="container">
-    <div class="disclaimer">
-      ⚠️ 本网站所有内容仅为数据分析，不构成任何投资建议。股市有风险，投资需谨慎。
-    </div>
+    <!-- ====== MAIN ====== -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h2>📊 市场仪表盘</h2>
+          <span class="text-muted" style="font-size:0.8rem;" id="updateTime">加载中…</span>
+        </div>
+        <div class="header-actions">
+          <button class="btn" onclick="showAddStockModal()">+ 添加关注</button>
+          <button class="btn" onclick="refreshData()">🔄 刷新</button>
+        </div>
+      </div>
 
-    <section class="report-list">
-      <h2>📊 历史报告</h2>
-      <ul id="report-list">
-        <!-- JS 动态填充 -->
-      </ul>
-    </section>
+      <!-- 概览统计 -->
+      <div class="stats-bar" id="statsBar">
+        <!-- JS 填充 -->
+      </div>
 
-    <section class="about">
-      <h2>关于无名</h2>
-      <p>无名是一个 AI 驱动的 A 股科技股分析系统。每个交易日收盘后，自动抓取市场数据，基于 MACD、KDJ、RSI、布林带、均线系统、量价关系等多维指标进行分析，生成个股评分与次日走势预测。</p>
-      <p>次日收盘后，自动复盘前一日的预测准确性，标注偏差并修正分析框架。</p>
-      <p><strong>当前自选池：</strong>中芯国际、寒武纪、北方华创、中微公司、韦尔股份、兆易创新、海光信息、长电科技、紫光国微、中兴通讯</p>
-    </section>
+      <!-- 重点关注区 -->
+      <div class="panel" id="watchlistPanel">
+        <div class="panel-header" onclick="togglePanel('watchlistBody')">
+          <h3>⭐ 重点关注</h3>
+          <span style="font-size:0.75rem;color:var(--text-muted)" id="watchlistCount">0只</span>
+        </div>
+        <div class="panel-body" id="watchlistBody">
+          <div class="watchlist-empty" id="watchlistEmpty">
+            🎯 还没有重点关注股票<br>
+            <span style="font-size:0.75rem">点击股票卡片上的 ☆ 或右上角「添加关注」开始</span>
+          </div>
+          <div id="watchlistContent"></div>
+        </div>
+      </div>
+
+      <!-- 全部自选池 -->
+      <div class="section-title">
+        全部自选股
+        <span class="badge" id="stockCount">10只</span>
+      </div>
+
+      <div class="filter-bar">
+        <input type="text" class="search-input" placeholder="🔍 搜索股票…" id="stockSearch" oninput="filterStocks()">
+        <select id="sortBy" onchange="filterStocks()">
+          <option value="default">默认排序</option>
+          <option value="change_desc">涨幅 ↓</option>
+          <option value="change_asc">跌幅 ↑</option>
+          <option value="score_desc">评分 ↓</option>
+          <option value="price_desc">价格 ↓</option>
+        </select>
+        <button class="btn small" id="btnShowFav" onclick="toggleFavFilter()">仅看关注</button>
+      </div>
+
+      <div class="stock-grid" id="stockGrid">
+        <!-- JS 填充 -->
+      </div>
+
+      <footer class="site-footer">
+        <p>⚠️ 本网站所有内容仅为数据分析，不构成任何投资建议。股市有风险，投资需谨慎。</p>
+        <p style="margin-top:4px;">Made by 无名 · <span id="footerUpdate"></span></p>
+      </footer>
+    </main>
   </div>
 
-  <footer>
-    <p>Made by 无名 · Auto-generated daily · <span id="last-updated"></span></p>
-  </footer>
+  <!-- ====== 添加关注弹窗 ====== -->
+  <div class="modal-overlay hidden" id="addStockModal">
+    <div class="modal">
+      <h3>添加重点关注</h3>
+      <p class="text-muted" style="font-size:0.8rem;margin-bottom:12px">勾选要重点关注的股票，最多设置3档优先级</p>
+      <div id="modalStockList"></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">取消</button>
+        <button class="btn primary" onclick="saveWatchlist()">保存</button>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    // 自动列出所有报告文件
-    fetch('reports.json')
-      .then(r => r.json())
-      .then(data => {
-        const list = document.getElementById('report-list');
-        data.reports.forEach(r => {
-          const li = document.createElement('li');
-          li.innerHTML = `<a href="${r.file}">📈 ${r.date} — ${r.summary}</a>`;
-          list.appendChild(li);
-        });
-        if (data.reports.length > 0) {
-          document.getElementById('last-updated').textContent = '最后更新: ' + data.reports[0].date;
-        }
-      })
-      .catch(() => {
-        document.getElementById('report-list').innerHTML = '<li>暂无报告</li>';
-      });
-  </script>
+  <script src="data/stocks.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
