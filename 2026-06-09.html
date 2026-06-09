@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026-06-09 · 无名股评</title>
+  <style>
+:root {
+  --bg: #0d1117; --card-bg: #161b22; --border: #30363d;
+  --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+  --up: #3fb950; --down: #f85149; --flat: #d2991d;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.6; }
+header { background:var(--card-bg); border-bottom:1px solid var(--border); padding:1.5rem 2rem; text-align:center; }
+header h1 { font-size:1.8rem; }
+.subtitle { color:var(--muted); font-size:0.9rem; }
+.container { max-width:1100px; margin:0 auto; padding:2rem; }
+.disclaimer { background:#1a1a2e; border:1px solid #f85149; border-radius:6px; padding:0.8rem 1rem; margin-bottom:1.5rem; font-size:0.85rem; color:#f0883e; }
+.daily-title { font-size:1.5rem; margin-bottom:0.5rem; }
+.daily-date { color:var(--muted); margin-bottom:2rem; }
+h2 { border-bottom:1px solid var(--border); padding-bottom:0.5rem; margin:2rem 0 1rem; }
+.stock-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+@media (max-width:800px) { .stock-grid { grid-template-columns:1fr; } }
+.stock-card { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1.2rem; }
+.stock-header { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; }
+.stock-code { font-family:monospace; font-size:0.9rem; color:var(--muted); }
+.stock-name { font-weight:600; }
+.score-circle { margin-left:auto; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; }
+.score-up { background:#3fb95033; color:var(--up); border:2px solid var(--up); }
+.score-down { background:#f8514933; color:var(--down); border:2px solid var(--down); }
+.score-flat { background:#d2991d33; color:var(--flat); border:2px solid var(--flat); }
+.stock-price-row { display:flex; align-items:baseline; gap:0.5rem; margin-bottom:0.5rem; }
+.price { font-size:1.3rem; font-weight:700; }
+.change { font-size:0.9rem; }
+.date-tag { font-size:0.8rem; color:var(--muted); margin-left:auto; }
+.change.up,.up { color:var(--up); }
+.change.down,.down { color:var(--down); }
+.signal-row { margin:0.5rem 0; display:flex; flex-wrap:wrap; gap:0.3rem; }
+.ind-tag { font-size:0.8rem; padding:2px 6px; border-radius:4px; background:var(--bg); border:1px solid var(--border); }
+.ind-tag.bullish { border-color:var(--up); }
+.ind-tag.bearish { border-color:var(--down); }
+.prediction-box { background:var(--bg); border-radius:6px; padding:0.8rem; margin:0.5rem 0; font-size:0.9rem; }
+.pred { font-weight:700; }
+.pred.pred-up { color:var(--up); }
+.pred.pred-down { color:var(--down); }
+.pred.pred-flat { color:var(--flat); }
+.vote { color:var(--muted); font-size:0.85rem; }
+.weights-row { font-size:0.8rem; color:var(--muted); }
+.acc-row { font-size:0.8rem; color:var(--muted); margin-top:0.3rem; }
+.pred-table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.9rem; }
+.pred-table th { background:var(--card-bg); padding:8px 12px; text-align:left; border-bottom:2px solid var(--border); }
+.pred-table td { padding:8px 12px; border-bottom:1px solid var(--border); }
+.pred-table tr:hover { background:var(--card-bg); }
+.review-section { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem; }
+.review-item { padding:0.5rem; margin:0.3rem 0; border-radius:4px; }
+.review-item.right { border-left:3px solid var(--up); }
+.review-item.wrong { border-left:3px solid var(--down); }
+ul { padding-left:1.5rem; margin:1rem 0; }
+li { margin:0.3rem 0; }
+footer { text-align:center; padding:2rem; color:var(--muted); font-size:0.85rem; border-top:1px solid var(--border); margin-top:3rem; }
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="index.html">无名</a></h1>
+    <p class="subtitle">A股科技股分析 · 数据驱动 · 增量学习 · 逐日进化</p>
+  </header>
+
+  <div class="container">
+    <div class="disclaimer">
+      ⚠️ 本报告仅为数据分析与模型实验，不构成任何投资建议。股市有风险，投资需谨慎。
+    </div>
+
+    <h1 class="daily-title">📊 2026-06-09 科技股日报</h1>
+    <p class="daily-date">分析基于：2026-06-08 收盘数据 | 模型版本：v1.2 增量学习</p>
+
+    <h2>🔬 个股技术面分析</h2>
+    <div class="stock-grid">
+      
+<div class="stock-card">
+  <div class="stock-header">
+    <span class="stock-code">603228</span>
+    <span class="stock-name">景旺电子</span>
+    <span class="score-circle score-up">52%</span>
+  </div>
+  <div class="stock-price-row">
+    <span class="price">¥68.96</span>
+    <span class="change down">-3.32%</span>
+    <span class="date-tag">2026-06-08</span>
+  </div>
+  <div class="signal-row"><span class="ind-tag neutral">⚪ macd</span> <span class="ind-tag bullish">🟢 kdj</span> <span class="ind-tag neutral">⚪ rsi</span> <span class="ind-tag neutral">⚪ ma</span> <span class="ind-tag neutral">⚪ boll</span> <span class="ind-tag neutral">⚪ volume</span></div>
+  <div class="prediction-box">
+    <strong>预测：</strong><span class="pred pred-up">涨</span>
+    <span class="vote">(vote=+2.26, thr=±1.5)</span><br>
+    区间：¥63.3 ~ ¥74.62
+  </div>
+  <div class="weights-row">权重变化：macd:0.43 <span class="up">++0.06</span> | kdj:2.26 <span class="up">++0.21</span> | rsi:0.42 <span class="up">++0.05</span> | ma:0.48 <span class="up">++0.17</span> | boll:0.93 <span class="up">++0.05</span> | volume:2.02 <span class="">+0.00</span></div>
+  <div class="acc-row">方向预测：77次 | 平盘：40次</div>
+</div>
+
+<div class="stock-card">
+  <div class="stock-header">
+    <span class="stock-code">300136</span>
+    <span class="stock-name">信维通信</span>
+    <span class="score-circle score-up">50%</span>
+  </div>
+  <div class="stock-price-row">
+    <span class="price">¥103.65</span>
+    <span class="change down">-2.52%</span>
+    <span class="date-tag">2026-06-08</span>
+  </div>
+  <div class="signal-row"><span class="ind-tag neutral">⚪ macd</span> <span class="ind-tag neutral">⚪ kdj</span> <span class="ind-tag neutral">⚪ rsi</span> <span class="ind-tag neutral">⚪ ma</span> <span class="ind-tag neutral">⚪ boll</span> <span class="ind-tag neutral">⚪ volume</span></div>
+  <div class="prediction-box">
+    <strong>预测：</strong><span class="pred pred-up">涨</span>
+    <span class="vote">(vote=+0.00, thr=±1.0)</span><br>
+    区间：¥93.39 ~ ¥113.91
+  </div>
+  <div class="weights-row">权重变化：macd:0.80 <span class="">+0.00</span> | kdj:1.17 <span class="up">++0.17</span> | rsi:1.01 <span class="up">++0.10</span> | ma:1.01 <span class="up">++0.10</span> | boll:0.67 <span class="up">++0.17</span> | volume:1.89 <span class="">+0.00</span></div>
+  <div class="acc-row">方向预测：28次 | 平盘：90次</div>
+</div>
+
+<div class="stock-card">
+  <div class="stock-header">
+    <span class="stock-code">002913</span>
+    <span class="stock-name">奥士康</span>
+    <span class="score-circle score-up">61%</span>
+  </div>
+  <div class="stock-price-row">
+    <span class="price">¥50.57</span>
+    <span class="change down">-2.75%</span>
+    <span class="date-tag">2026-06-08</span>
+  </div>
+  <div class="signal-row"><span class="ind-tag neutral">⚪ macd</span> <span class="ind-tag bullish">🟢 kdj</span> <span class="ind-tag neutral">⚪ rsi</span> <span class="ind-tag bearish">🔴 ma</span> <span class="ind-tag bullish">🟢 boll</span> <span class="ind-tag neutral">⚪ volume</span></div>
+  <div class="prediction-box">
+    <strong>预测：</strong><span class="pred pred-up">涨</span>
+    <span class="vote">(vote=+2.22, thr=±2.0)</span><br>
+    区间：¥47.85 ~ ¥53.29
+  </div>
+  <div class="weights-row">权重变化：macd:0.35 <span class="up">++0.01</span> | kdj:2.06 <span class="up">++0.16</span> | rsi:0.81 <span class="up">++0.02</span> | ma:0.46 <span class="up">++0.15</span> | boll:0.62 <span class="">+0.00</span> | volume:2.10 <span class="up">++0.06</span></div>
+  <div class="acc-row">方向预测：67次 | 平盘：46次</div>
+</div>
+
+<div class="stock-card">
+  <div class="stock-header">
+    <span class="stock-code">002050</span>
+    <span class="stock-name">三花智控</span>
+    <span class="score-circle score-up">52%</span>
+  </div>
+  <div class="stock-price-row">
+    <span class="price">¥47.38</span>
+    <span class="change down">-0.27%</span>
+    <span class="date-tag">2026-06-08</span>
+  </div>
+  <div class="signal-row"><span class="ind-tag neutral">⚪ macd</span> <span class="ind-tag bullish">🟢 kdj</span> <span class="ind-tag neutral">⚪ rsi</span> <span class="ind-tag neutral">⚪ ma</span> <span class="ind-tag neutral">⚪ boll</span> <span class="ind-tag neutral">⚪ volume</span></div>
+  <div class="prediction-box">
+    <strong>预测：</strong><span class="pred pred-up">涨</span>
+    <span class="vote">(vote=+2.17, thr=±1.0)</span><br>
+    区间：¥44.65 ~ ¥50.11
+  </div>
+  <div class="weights-row">权重变化：macd:0.28 <span class="down">-0.02</span> | kdj:2.17 <span class="up">++0.25</span> | rsi:1.04 <span class="">+0.00</span> | ma:0.47 <span class="up">++0.15</span> | boll:0.53 <span class="up">++0.11</span> | volume:2.03 <span class="up">++0.03</span></div>
+  <div class="acc-row">方向预测：76次 | 平盘：37次</div>
+</div>
+    </div>
+
+    <h2>📈 预测汇总</h2>
+    
+<table class="pred-table">
+<tr><th>股票</th><th>收盘价</th><th>变动</th><th>KDJ</th><th>投票</th><th>预测</th><th>准确率</th><th>支撑</th><th>压力</th></tr>
+<tr>
+<td>603228 景旺电子</td>
+<td>¥68.96</td>
+<td class="down">-3.32%</td>
+<td>🟢</td>
+<td>+2.26</td>
+<td class="pred pred-up">涨</td>
+<td>52%</td>
+<td>¥63.3</td>
+<td>¥74.62</td>
+</tr><tr>
+<td>300136 信维通信</td>
+<td>¥103.65</td>
+<td class="down">-2.52%</td>
+<td>⚪</td>
+<td>+0.00</td>
+<td class="pred pred-up">涨</td>
+<td>50%</td>
+<td>¥93.39</td>
+<td>¥113.91</td>
+</tr><tr>
+<td>002913 奥士康</td>
+<td>¥50.57</td>
+<td class="down">-2.75%</td>
+<td>🟢</td>
+<td>+2.22</td>
+<td class="pred pred-up">涨</td>
+<td>61%</td>
+<td>¥47.85</td>
+<td>¥53.29</td>
+</tr><tr>
+<td>002050 三花智控</td>
+<td>¥47.38</td>
+<td class="down">-0.27%</td>
+<td>🟢</td>
+<td>+2.17</td>
+<td class="pred pred-up">涨</td>
+<td>52%</td>
+<td>¥44.65</td>
+<td>¥50.11</td>
+</tr></table>
+
+    <h2>🔄 昨日复盘（2026-06-08 预测 vs 实际）</h2>
+    <div class="review-section">
+      <h3>昨日预测准确率：1/4 (25%)</h3>
+      
+<div class="review-item wrong">
+  <strong>❌ 603228</strong>: 预测 <em>flat</em> → 实际 <em>down</em> (-3.32%)
+</div>
+<div class="review-item wrong">
+  <strong>❌ 300136</strong>: 预测 <em>up</em> → 实际 <em>down</em> (-2.52%)
+</div>
+<div class="review-item wrong">
+  <strong>❌ 002913</strong>: 预测 <em>up</em> → 实际 <em>down</em> (-2.75%)
+</div>
+<div class="review-item right">
+  <strong>✅ 002050</strong>: 预测 <em>down</em> → 实际 <em>down</em> (-0.27%)
+</div>
+      <p style="margin-top:1rem;color:var(--muted);font-size:0.9rem;">
+        教训：4只股票3只预测错误。上周五的模型未能预判周一的加速下跌。
+        主要问题：(1) 平盘预测完全失效；(2) KDJ超卖信号在单边下跌中被"抢跑"；
+        (3) 信维通信模型覆盖度过低，需要引入动量辅助。
+      </p>
+    </div>
+
+    <h2>🧬 模型进化</h2>
+    <div class="review-section">
+      
+<h3>🔬 增量学习发现</h3>
+<ul>
+<li><strong>KDJ 全面走强</strong>：4只股票的KDJ权重均上升（+0.16 ~ +0.25）。KDJ超卖反弹（J<-20）信号在近期连续下跌行情中表现出色。</li>
+<li><strong>信号覆盖率分化</strong>：奥士康方向预测覆盖率59%（113次中67次），信维通信仅22%。高覆盖率股票模型更可靠。</li>
+<li><strong>阈值自适应</strong>：各股票最优阈值在1.0~2.0之间分化。低信号覆盖率股票倾向低阈值（信维通信1.0），高覆盖率倾向高阈值（奥士康2.0）。</li>
+<li><strong>平盘预测问题持续</strong>：信维通信90/117次平盘预测，几乎无法做方向判断。需考虑为低信号股票引入动量增强机制。</li>
+<li><strong>板块共振</strong>：4只股票在6月8日全部收跌，3只触发KDJ超卖信号。若板块持续走弱，超卖反弹信号需要更谨慎解读。</li>
+</ul>
+<h3>📐 模型版本：v1.2</h3>
+<p>变化：v1.0 等权6指标 → v1.1 自适应加权 → v1.2 增量学习 + 动量打破平局 + 阈值自适应</p>
+
+    </div>
+
+    <p style="text-align:center;margin-top:2rem;">
+      <a href="index.html">← 返回首页</a>
+    </p>
+  </div>
+
+  <footer>
+    <p>无名 · 数据驱动的A股科技股分析 · 2026-06-09</p>
+  </footer>
+</body>
+</html>

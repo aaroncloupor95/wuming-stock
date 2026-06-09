@@ -1,128 +1,69 @@
-     1|<!DOCTYPE html>
-     2|<html lang="zh-CN">
-     3|<head>
-     4|  <meta charset="UTF-8">
-     5|  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     6|  <title>无名 · A股科技股分析</title>
-     7|  <link rel="stylesheet" href="style.css">
-     8|</head>
-     9|<body>
-    10|  <div class="app-layout">
-    11|    <!-- ====== SIDEBAR ====== -->
-    12|    <button class="hamburger" onclick="toggleSidebar()">☰</button>
-    13|    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-    14|    <aside class="sidebar" id="sidebar">
-    15|      <div class="sidebar-brand">
-    16|        <h1>无名</h1>
-    17|        <p class="tagline">A股科技股 · 数据驱动</p>
-    18|      </div>
-    19|      <nav class="sidebar-nav">
-    20|        <div class="nav-section-title">概览</div>
-    21|        <a href="index.html" class="nav-item active">
-    22|          <span class="nav-icon">📊</span> 仪表盘
-    23|        </a>
-    24|        <a href="review.html" class="nav-item">
-    25|          <span class="nav-icon">📈</span> 预测复盘
-    26|        </a>
-    27|        <div class="nav-section-title">自选池</div>
-    28|        <div class="nav-stock-list" id="sidebarStockList">
-    29|          <!-- JS 填充 -->
-    30|        </div>
-    31|      </nav>
-    32|    </aside>
-    33|
-    34|    <!-- ====== MAIN ====== -->
-    35|    <main class="main-content">
-    36|      <div class="page-header">
-    37|        <div>
-    38|          <h2>📊 市场仪表盘</h2>
-    39|          <span class="text-muted" style="font-size:0.8rem;" id="updateTime">加载中…</span>
-    40|        </div>
-    41|        <div class="header-actions">
-    42|          <button class="btn" onclick="showAddStockModal()">+ 添加关注</button>
-    43|          <button class="btn" onclick="refreshData()">🔄 刷新</button>
-    44|        </div>
-    45|      </div>
-    46|
-    47|      <!-- 概览统计 -->
-    48|      <div class="stats-bar" id="statsBar">
-    49|        <!-- JS 填充 -->
-    50|      </div>
-    51|
-    52|      <!-- 重点关注区 -->
-    53|      <div class="panel" id="watchlistPanel">
-    54|        <div class="panel-header" onclick="togglePanel('watchlistBody')">
-    55|          <h3>⭐ 重点关注</h3>
-    56|          <span style="font-size:0.75rem;color:var(--text-muted)" id="watchlistCount">0只</span>
-    57|        </div>
-    58|        <div class="panel-body" id="watchlistBody">
-    59|          <div class="watchlist-empty" id="watchlistEmpty">
-    60|            🎯 还没有重点关注股票<br>
-    61|            <span style="font-size:0.75rem">点击股票卡片上的 ☆ 或右上角「添加关注」开始</span>
-    62|          </div>
-    63|          <div id="watchlistContent"></div>
-    64|        </div>
-    65|      </div>
-    66|
-    67|      <!-- 全部自选池 -->
-    68|      <div class="section-title">
-    69|        全部自选股
-    70|        <span class="badge" id="stockCount">10只</span>
-    71|      </div>
-    72|
-    73|      <div class="filter-bar">
-    74|        <input type="text" class="search-input" placeholder="🔍 搜索股票…" id="stockSearch" oninput="filterStocks()">
-    75|        <select id="sortBy" onchange="filterStocks()">
-    76|          <option value="default">默认排序</option>
-    77|          <option value="change_desc">涨幅 ↓</option>
-    78|          <option value="change_asc">跌幅 ↑</option>
-    79|          <option value="score_desc">评分 ↓</option>
-    80|          <option value="price_desc">价格 ↓</option>
-    81|        </select>
-    82|        <button class="btn small" id="btnShowFav" onclick="toggleFavFilter()">仅看关注</button>
-    83|      </div>
-    84|
-    85|      <div class="stock-grid" id="stockGrid">
-    86|        <!-- JS 填充 -->
-    87|      </div>
-    88|
-    89|      <footer class="site-footer">
-    90|        <p>⚠️ 本网站所有内容仅为数据分析，不构成任何投资建议。股市有风险，投资需谨慎。</p>
-    91|        <p style="margin-top:4px;">Made by 无名 · <span id="footerUpdate"></span></p>
-    92|      </footer>
-    93|    </main>
-    94|  </div>
-    95|
-    96|  <!-- ====== 添加关注弹窗 ====== -->
-    97|  <div class="modal-overlay hidden" id="addStockModal">
-    98|    <div class="modal">
-    99|      <h3>添加重点关注</h3>
-   100|      <p class="text-muted" style="font-size:0.8rem;margin-bottom:12px">勾选要重点关注的股票，最多设置3档优先级</p>
-   101|      <div id="modalStockList"></div>
-   102|      <div class="modal-actions">
-   103|        <button class="btn" onclick="closeModal()">取消</button>
-   104|        <button class="btn primary" onclick="saveWatchlist()">保存</button>
-   105|      </div>
-   106|    </div>
-   107|  </div>
-   108|
-   109|  <!-- ====== 自定义添加股票弹窗 ====== -->
-   110|  <div class="modal-overlay hidden" id="customStockModal">
-   111|    <div class="modal">
-   112|      <h3>➕ 自定义添加股票</h3>
-   113|      <p class="text-muted" style="font-size:0.8rem;margin-bottom:12px">输入A股代码和名称，添加到自选池（数据将在下次系统更新时抓取）</p>
-   114|      <div style="display:flex;flex-direction:column;gap:10px">
-   115|        <input type="text" class="search-input" id="customStockCode" placeholder="股票代码（如 603228）" style="width:100%">
-   116|        <input type="text" class="search-input" id="customStockName" placeholder="股票名称（如 景旺电子）" style="width:100%">
-   117|      </div>
-   118|      <div class="modal-actions" style="margin-top:16px">
-   119|        <button class="btn" onclick="closeCustomModal()">取消</button>
-   120|        <button class="btn primary" onclick="addCustomStock()">添加</button>
-   121|      </div>
-   122|    </div>
-   123|  </div>
-   124|
-   125|  <script src="data/stocks.js"></script>
-   126|  <script src="app.js"></script>
-   127|</body>
-   128|</html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>无名 · A股科技股分析</title>
+  <style>
+:root {
+  --bg: #0d1117; --card-bg: #161b22; --border: #30363d;
+  --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+  --up: #3fb950; --down: #f85149;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.6; }
+header { background:var(--card-bg); border-bottom:1px solid var(--border); padding:1.5rem 2rem; text-align:center; }
+header h1 { font-size:2rem; }
+.subtitle { color:var(--muted); }
+.container { max-width:800px; margin:0 auto; padding:2rem; }
+h2 { border-bottom:1px solid var(--border); padding-bottom:0.5rem; margin:1.5rem 0 1rem; }
+ul { list-style:none; padding:0; }
+li { padding:0.4rem 0; border-bottom:1px solid var(--border); }
+li a { color:var(--accent); text-decoration:none; font-size:1.1rem; }
+li a:hover { text-decoration:underline; }
+.mini-card { background:var(--card-bg); border:1px solid var(--border); border-radius:6px; padding:0.6rem 1rem; margin:0.4rem 0; display:flex; align-items:center; gap:0.5rem; }
+.mini-card strong { margin-right:auto; }
+.up { color:var(--up); font-weight:700; }
+.down { color:var(--down); font-weight:700; }
+footer { text-align:center; padding:2rem; color:var(--muted); font-size:0.85rem; border-top:1px solid var(--border); margin-top:3rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>无名</h1>
+    <p class="subtitle">A股科技股分析 · 数据驱动 · 逐日进化 · 非投资建议</p>
+  </header>
+
+  <div class="container">
+    <h2>📊 最新分析（2026-06-09）</h2>
+    
+      <div class="mini-card">
+        <strong>603228 景旺电子</strong> ¥68.96
+        <span class="up">→涨</span>
+      </div>
+      <div class="mini-card">
+        <strong>300136 信维通信</strong> ¥103.65
+        <span class="up">→涨</span>
+      </div>
+      <div class="mini-card">
+        <strong>002913 奥士康</strong> ¥50.57
+        <span class="up">→涨</span>
+      </div>
+      <div class="mini-card">
+        <strong>002050 三花智控</strong> ¥47.38
+        <span class="up">→涨</span>
+      </div>
+    <p style="margin-top:1rem;"><a href="2026-06-09.html">查看完整日报 →</a></p>
+
+    <h2>📅 历史日报</h2>
+    <ul>
+      <li><a href="2026-06-09.html">2026-06-09 · 日报</a></li>
+      <li><a href="2026-06-08.html">2026-06-08 · 日报</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>无名 · 2026-06-09</p>
+  </footer>
+</body>
+</html>
